@@ -3,9 +3,8 @@
 import { motion } from 'framer-motion'
 
 type RecipeSectionProps = {
-  title: string
-  items: string[]
-  ordered?: boolean
+  name: string
+  ingredientsPreview: string[]
 }
 
 const containerVariants = {
@@ -23,10 +22,10 @@ const itemVariants = {
 }
 
 export default function RecipeSection({
-  title,
-  items,
+  name,
+  ingredientsPreview,
 }: RecipeSectionProps) {
-  const isIngredients = title.toLowerCase().includes('ingredient')
+  const isIngredients = ingredientsPreview.includes('ingredient')
   const emoji = isIngredients ? '🧂' : '👨‍🍳'
 
   return (
@@ -38,14 +37,14 @@ export default function RecipeSection({
     >
       <motion.h2
         variants={itemVariants}
-        className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-4"
+        className="text-2xl font-bold text-gray-800 flex ingredients_preview-center gap-2 mb-4"
       >
-        <span>{emoji}</span> {title}
+        <span>{emoji}</span> {name}
       </motion.h2>
 
       {isIngredients ? (
         <motion.ul className="flex flex-wrap gap-2">
-          {items.map((item, i) => (
+          {ingredientsPreview.map((item, i) => (
             <motion.li
               key={i}
               variants={itemVariants}
@@ -57,7 +56,7 @@ export default function RecipeSection({
         </motion.ul>
       ) : (
         <motion.ol className="space-y-3">
-          {items.map((ingredients, i) => (
+          {ingredientsPreview.map((ingredients, i) => (
             <motion.li
               key={i}
               variants={itemVariants}

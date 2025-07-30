@@ -1,32 +1,31 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { Recipe } from '../types/interfaces'
+import CountryFlag from './CountryFlag'
 
 type RecipeSectionProps = {
-  name: string
-  ingredientsPreview: string[]
+  recipe: Recipe
 }
 
 const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.05,
     },
   },
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 12 },
+  hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
 }
 
 export default function RecipeSection({
-  name,
-  ingredientsPreview,
+  recipe
 }: RecipeSectionProps) {
-  const isIngredients = ingredientsPreview.includes('ingredient')
-  const emoji = isIngredients ? '🧂' : '👨‍🍳'
+  const isIngredients = recipe.ingredients_preview.includes('ingredient')
 
   return (
     <motion.div
@@ -37,32 +36,35 @@ export default function RecipeSection({
     >
       <motion.h2
         variants={itemVariants}
-        className="text-2xl font-bold text-gray-800 flex ingredients_preview-center gap-2 mb-4"
+        className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-4"
       >
-        <span>{emoji}</span> {name}
+        <span>👨‍🍳</span> {recipe.name}   <CountryFlag region={recipe.region} />
       </motion.h2>
+
+
+
 
       {isIngredients ? (
         <motion.ul className="flex flex-wrap gap-2">
-          {ingredientsPreview.map((item, i) => (
+          {recipe.ingredients_preview.map((item, i) => (
             <motion.li
               key={i}
               variants={itemVariants}
-              className="bg-pink-100 text-pink-800 px-4 py-1 rounded-full text-sm font-medium shadow"
+              className="bg-fuchsia-500 text-gray-800 px-4 py-1 rounded-full text-sm font-medium shadow hover:bg-yellow-100 transition"
             >
-              {item}
+              🧂{item}
             </motion.li>
           ))}
         </motion.ul>
       ) : (
-        <motion.ol className="space-y-3">
-          {ingredientsPreview.map((ingredients, i) => (
+        <motion.ol className="space-y-2">
+          {recipe.ingredients_preview.map((step, i) => (
             <motion.li
               key={i}
               variants={itemVariants}
-              className="bg-green-50 border-l-4 border-green-400 px-4 py-3 rounded-md shadow-sm"
+              className="bg-white text-gray-800 px-4 py-2 rounded-md shadow hover:bg-green-50 transition"
             >
-              <div className="text-gray-700">{ingredients}</div>
+              🧂{step}
             </motion.li>
           ))}
         </motion.ol>

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Recipe } from '../types/interfaces';
+import AnimatedLinkButton from './AnimatedLinkButton';
 
 
 
@@ -157,6 +158,7 @@ export default function FoodWheel({
       >
         {rotating ? 'Spinning...' : 'Spin the Wheel!'}
       </button>
+
 
       {/* Selected Result */}
       {selectedItem && !rotating && (

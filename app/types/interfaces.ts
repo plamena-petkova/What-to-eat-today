@@ -1,12 +1,12 @@
 export interface Recipe {
-  id: string; // UUID
+  id: string; 
   name: string;
-  region: string | null;
-  ingredients_preview: string[]; // short display list
-  full_ingredients: Record<string, string> | null; // { ingredient: quantity }
+  region: string;
+  ingredients_preview: string[]; 
+  full_ingredients: Record<string, string> | null; 
   instructions: string | null;
   image_url: string | null;
   tags: string[] | null;
-  created_at: string; // ISO timestamp
+  created_at: string; 
   is_full: boolean;
 }

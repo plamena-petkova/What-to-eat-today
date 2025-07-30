@@ -1,11 +1,15 @@
 import { supabase } from '@/lib/supabase';
 import { NextResponse } from 'next/server';
 
+type Props = {
+    id:string
+}
+
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Props }
 ) {
-  const { id } = params;
+  const { id } = await params;
 
   const { data, error } = await supabase
     .from('recipes')

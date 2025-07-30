@@ -1,47 +1,47 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import FoodWheel from '../components/FoodWheel'
-import { useEffect, useState } from 'react'
-import { Recipe } from '../types/interfaces'
+import { useEffect } from 'react'
+import { useRecipesStore } from '@/store/recipesStore'
+import LoadingPulsingPizza from '../components/LoadingPulsingPizza'
+import Image from 'next/image'
+import Navbar from '../components/Navbar'
 
 
 export default function SpinPage() {
   const router = useRouter()
 
-  const [meals, setMeals] = useState<Recipe[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { recipes, loading, error, fetchRecipes } = useRecipesStore();
 
 
   function handleSelect(selectedId: string) {
     router.push(`/result?recipeId=${encodeURIComponent(selectedId)}`)
   }
 
-      const fetchMeals = async () => {
-      try {
-        const res = await fetch('/api/recipes');
-        const recipes = await res.json() as Recipe[];
-         console.log('Res', recipes);
-        setMeals(recipes);
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError('An unknown error occurred.');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
+
 
   useEffect(() => {
-    fetchMeals(); 
-  }, []); 
+    fetchRecipes();
+  }, []);
+
+  if (loading) return <div className='min-h-screen flex items-center flex-col justify-center'><p className="mt-4 text-gray-600 font-medium text-lg">Loading recipes...</p><LoadingPulsingPizza /></div>;
+  if (error) return <p>Error: {error}</p>;
 
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <FoodWheel items={meals} onSelect={handleSelect} showLabels={false} />
-    </div>
+    <>
+      <Navbar />
+
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="border-dotted rounded-xl">
+          <h1
+            className="text-2xl text-center font-extrabold text-white mb-8 drop-shadow-lg"
+          >
+            What to Eat Today?
+          </h1>
+          <FoodWheel items={recipes} onSelect={handleSelect} showLabels={false} />
+        </div>
+      </div>
+    </>
   )
 }

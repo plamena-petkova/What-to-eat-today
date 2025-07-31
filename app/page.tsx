@@ -38,7 +38,7 @@ export default function HomePage() {
         aria-label="Spin the wheel to pick a meal"
         href="/spin"
       >
-        Spin the Wheel 🎉
+        Spin the Pizza 🎉
       </motion.a>
 
 

@@ -7,7 +7,6 @@ import RecipeSection from '../components/RecipeSection';
 import { useRecipesStore } from '@/store/recipesStore';
 import LoadingPulsingPizza from '../components/LoadingPulsingPizza';
 import AnimatedLinkButton from '../components/AnimatedLinkButton';
-import Link from 'next/link';
 import Navbar from '../components/Navbar';
 
 export default function ResultPage() {
@@ -15,7 +14,6 @@ export default function ResultPage() {
   const recipeId = searchParams.get('recipeId');
 
   const { selectedRecipe: recipe, loading, error, fetchRecipeById } = useRecipesStore();
-
 
   useEffect(() => {
     if (!recipeId) return;
@@ -43,7 +41,8 @@ export default function ResultPage() {
     );
   }
 
-  const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(recipe!.name)}+recipe`
+  const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(recipe!.name)}+recipe`;
+
 
   return (
     <>
@@ -57,9 +56,10 @@ export default function ResultPage() {
           <RecipeSection recipe={recipe!} />
 
           <AnimatedLinkButton href={searchUrl} newTab>
-
             Search for full recipe
-
+          </AnimatedLinkButton>
+          <AnimatedLinkButton href='/spin' newTab={false}>
+            Spin again
           </AnimatedLinkButton>
         </div>
       </div>

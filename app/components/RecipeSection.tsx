@@ -25,7 +25,16 @@ const itemVariants = {
 export default function RecipeSection({
   recipe
 }: RecipeSectionProps) {
-  const isIngredients = recipe.ingredients_preview.includes('ingredient')
+  const isIngredients = recipe.ingredients_preview.includes('ingredient');
+
+  const tagEmojis: Record<string, string> = {
+    main: "🥘",
+    dessert: "🍰",
+    soup: "🍲",
+    spread: "🧈",
+    salad: "🥗"
+  };
+
 
   return (
     <motion.div
@@ -39,8 +48,11 @@ export default function RecipeSection({
         className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-4"
       >
         <span>👨‍🍳</span> {recipe.name}   <CountryFlag region={recipe.region} />
-      </motion.h2>
 
+      </motion.h2>
+      <motion.h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-4">
+        <span>{recipe.tags && tagEmojis[recipe.tags[0]]} {recipe.tags}</span>
+      </motion.h2>
 
 
 

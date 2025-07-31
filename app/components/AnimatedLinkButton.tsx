@@ -24,7 +24,7 @@ export default function AnimatedLinkButton({
       initial={initial}
       animate={animate}
       transition={transition}
-      className={`text-center mt-10 ${className}`}
+      className={`text-center mt-6 ${className}`}
       {...motionProps}
     >
       <Link

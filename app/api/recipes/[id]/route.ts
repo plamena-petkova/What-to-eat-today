@@ -1,21 +1,18 @@
 import { supabase } from '@/lib/supabase';
 import { NextResponse } from 'next/server';
-
-type Props = {
-    id:string
-}
+import type { NextRequest } from 'next/server';
 
 export async function GET(
-  request: Request,
-  { params }: { params: Props }
+  request: NextRequest,
+  context: { params: { id: string } }
 ) {
-  const { id } = await params;
+  const { id } = context.params;
 
   const { data, error } = await supabase
     .from('recipes')
     .select('*')
     .eq('id', id)
-    .single(); 
+    .single();
 
   if (error || !data) {
     return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });

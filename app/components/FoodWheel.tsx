@@ -21,6 +21,7 @@ export default function FoodWheel({
   const [rotating, setRotating] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [selectedItem, setSelectedItem] = useState<Recipe | null>(null);
+  const [previousIndex, setPreviousIndex] = useState<number | null>(null);
 
   const radius = 140;
   const center = 150;
@@ -84,24 +85,40 @@ export default function FoodWheel({
     ].join(' ');
   };
 
-  const spinWheel = () => {
-    if (rotating || items.length === 0) return;
 
-    const spins = Math.floor(Math.random() * 3) + 4;
-    const chosenIndex = Math.floor(Math.random() * items.length);
-    const finalRotation =
-      360 * spins + (360 - (chosenIndex % sliceCount) * angle - angle / 2);
+const spinWheel = () => {
+  if (rotating || items.length === 0) return;
 
-    setRotation(finalRotation);
-    setRotating(true);
+  const spins = Math.floor(Math.random() * 3) + 4;
 
-    setTimeout(() => {
-      setRotating(false);
-      const selected = items[chosenIndex];
-      setSelectedItem(selected);
-      onSelect(selected.id);
-    }, 3000);
-  };
+  let chosenIndex = Math.floor(Math.random() * items.length);
+
+  if (previousIndex !== null && items.length > 1) {
+    let maxDistance = -1;
+    for (let i = 0; i < items.length; i++) {
+      const distance = Math.abs(i - previousIndex);
+      if (distance > maxDistance && i !== previousIndex) {
+        maxDistance = distance;
+        chosenIndex = i;
+      }
+    }
+  }
+
+  const finalRotation =
+    360 * spins + (360 - (chosenIndex % sliceCount) * angle - angle / 2);
+
+  setRotation(finalRotation);
+  setRotating(true);
+
+  setTimeout(() => {
+    setRotating(false);
+    const selected = items[chosenIndex];
+    setSelectedItem(selected);
+    onSelect(selected.id);
+    setPreviousIndex(chosenIndex); 
+  }, 3000);
+};
+
 
   return (
     <div className="relative flex flex-col items-center">
@@ -164,7 +181,7 @@ export default function FoodWheel({
       {selectedItem && !rotating && (
         <div className="mt-4 text-center">
           <p className="text-gray-600">Selected:</p>
-          <p className="text-xl font-semibold text-amber-700">{selectedItem.region}</p>
+          <p className="text-xl font-semibold text-amber-700">{selectedItem.name}</p>
         </div>
       )}
     </div>

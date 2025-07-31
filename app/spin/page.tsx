@@ -15,7 +15,7 @@ export default function SpinPage() {
 
 
   function handleSelect(selectedId: string) {
-    router.push(`/result?recipeId=${encodeURIComponent(selectedId)}`)
+    setTimeout(() => (router.push(`/result?recipeId=${encodeURIComponent(selectedId)}`)), 2000)
   }
 
 

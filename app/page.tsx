@@ -26,27 +26,27 @@ export default function HomePage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4, duration: 0.6 }}
-        className="text-lg text-white mb-12 max-w-xs drop-shadow-md"
+        className="text-lg text-white mb-8 max-w-xs drop-shadow-md"
       >
-        Stuck on what to eat? Spin the wheel and get inspired with delicious meal ideas!
+        Hungry and clueless? Spin the wheel and unlock tasty meal ideas from around the globe!
       </motion.p>
 
-        <motion.a
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="inline-block bg-white text-pink-600 font-bold rounded-full px-14 py-5 shadow-lg hover:shadow-2xl transition"
-          aria-label="Spin the wheel to pick a meal"
-          href="/spin"
-        >
-          Spin the Wheel 🎉
-        </motion.a>
-   
+      <motion.a
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="inline-block bg-white text-pink-600 font-bold rounded-full px-14 py-5 shadow-lg hover:shadow-2xl transition"
+        aria-label="Spin the wheel to pick a meal"
+        href="/spin"
+      >
+        Spin the Wheel 🎉
+      </motion.a>
+
 
       <motion.ul
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.6 }}
-        className="mt-16 text-white text-base space-y-4 max-w-xs"
+        className="mt-10 text-white text-base space-y-2 max-w-xs"
       >
         <li>🍳 Quick and easy meal ideas</li>
         <li>🌍 Explore recipes from around the world</li>
@@ -57,7 +57,7 @@ export default function HomePage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
-        className="mt-20 text-white text-sm opacity-80"
+        className="mt-8 text-white text-sm opacity-80"
       >
         Made with ❤️ for hungry souls!
       </motion.footer>

@@ -1,32 +1,40 @@
-// components/CountryFlag.tsx
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import countries from 'i18n-iso-countries';
-import 'i18n-iso-countries/langs/en.json';
+import enLocale from 'i18n-iso-countries/langs/en.json';
 
-countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
+// Ensure the locale is registered once
+if (!countries.getAlpha2Code('Germany', 'en')) {
+  countries.registerLocale(enLocale);
+}
 
 type Props = {
-    region: string; // e.g., "Germany"
+  region: string; // e.g., "Germany"
 };
 
 export default function CountryFlag({ region }: Props) {
-    const countryCode = countries.getAlpha2Code(region, 'en');
+  const [countryCode, setCountryCode] = useState<string | null>(null);
 
-    if (!countryCode) return <span>🌐 Unknown Region</span>;
+  useEffect(() => {
+    const code = countries.getAlpha2Code(region, 'en');
+    setCountryCode(code || null);
+  }, [region]);
 
-    const flagUrl = `https://flagcdn.com/w80/${countryCode.toLowerCase()}.png`; // flagcdn.com requires lowercase
+  if (!countryCode) {
+    return <span title={region}>🌐</span>; // fallback if region not found
+  }
 
-    return (
+  const flagUrl = `https://flagcdn.com/w80/${countryCode.toLowerCase()}.png`;
 
-        <img
-            src={flagUrl}
-            alt={`${region} flag`}
-            width={40}
-            height={30}
-            style={{ borderRadius: '4px' }}
-        />
-
-    );
+  return (
+    <img
+      src={flagUrl}
+      alt={`${region} flag`}
+      width={40}
+      height={30}
+      style={{ borderRadius: '4px' }}
+      loading="lazy"
+    />
+  );
 }

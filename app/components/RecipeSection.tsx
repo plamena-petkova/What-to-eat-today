@@ -32,7 +32,8 @@ export default function RecipeSection({
     dessert: "🍰",
     soup: "🍲",
     spread: "🧈",
-    salad: "🥗"
+    salad: "🥗",
+    snack: "🥨"
   };
 
 

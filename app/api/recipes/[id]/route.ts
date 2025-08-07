@@ -1,12 +1,12 @@
+import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+
 
 export async function GET(
-  request: NextRequest,
-  context: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const { id } = context.params;
+  const id = (await params).id
 
   const { data, error } = await supabase
     .from('recipes')
@@ -20,3 +20,4 @@ export async function GET(
 
   return NextResponse.json(data);
 }
+

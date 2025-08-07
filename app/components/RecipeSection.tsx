@@ -33,7 +33,8 @@ export default function RecipeSection({
     soup: "🍲",
     spread: "🧈",
     salad: "🥗",
-    snack: "🥨"
+    snack: "🥨",
+    bakery: "🥐"
   };
 
 
@@ -48,11 +49,11 @@ export default function RecipeSection({
         variants={itemVariants}
         className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-4"
       >
-        <span>👨‍🍳</span> {recipe.name}   <CountryFlag region={recipe.region} />
+        <span>👨‍🍳</span> {recipe.name}   <CountryFlag region={recipe.region} /><span>{recipe.region}</span>
 
       </motion.h2>
       <motion.h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2 mb-4">
-        <span>{recipe.tags && tagEmojis[recipe.tags[0]]} {recipe.tags}</span>
+        <span>Dish type:</span><span>{recipe.tags && tagEmojis[recipe.tags[0]]} {recipe.tags}</span>
       </motion.h2>
 
 

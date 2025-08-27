@@ -15,25 +15,44 @@ export default function FoodWheel({ items, onSelect }: FoodWheelProps) {
   const [rotating, setRotating] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [selectedItem, setSelectedItem] = useState<Recipe | null>(null);
+  const [history, setHistory] = useState<string[]>([]);
 
   const spinWheel = () => {
     if (rotating || items.length === 0) return;
 
     const spins = Math.floor(Math.random() * 3) + 4;
-    const finalRotation = 360 * spins + Math.random() * 360; // random extra rotation
+    const finalRotation = 360 * spins + Math.random() * 360;
 
     setRotation(finalRotation);
     setRotating(true);
 
     setTimeout(() => {
       setRotating(false);
-      // Randomly select a recipe independently
-      const chosenIndex = Math.floor(Math.random() * items.length);
-      const selected = items[chosenIndex];
+
+      // Exclude recipes from recent history
+      let availableItems = items.filter(item => !history.includes(item.id));
+
+      if (availableItems.length === 0) {
+        // All recipes have been seen recently, so reset the history
+        setHistory([]);
+        availableItems = [...items];
+      }
+
+      const chosenIndex = Math.floor(Math.random() * availableItems.length);
+      const selected = availableItems[chosenIndex];
+
       setSelectedItem(selected);
+
+      // Update recent history
+      setHistory(prev => {
+        const newHistory = [selected.id, ...prev];
+        return newHistory.slice(0, 10); // Keep the last 10
+      });
+
       onSelect(selected.id);
     }, 3000);
   };
+
 
   return (
     <div className="relative flex flex-col items-center">

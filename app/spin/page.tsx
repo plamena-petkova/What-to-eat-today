@@ -37,7 +37,7 @@ export default function SpinPage() {
   return (
     <>
       <Navbar />
-      <div className="flex flex-col items-center justify-center h-screen">
+      <div className="flex flex-col mt-10 items-center justify-center h-screen">
         <div className="border-dotted rounded-xl">
           <h1 className="text-2xl text-center font-extrabold text-white mb-8 drop-shadow-lg">
             What to Eat Today?

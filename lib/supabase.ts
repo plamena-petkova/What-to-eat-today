@@ -1,6 +1,17 @@
-import { createBrowserClient } from "@supabase/ssr";
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!;
+let client: SupabaseClient | null = null;
 
-export const supabase = createBrowserClient(supabaseUrl, supabaseKey);
+export function getSupabase() {
+  if (client) return client;
+
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_ANON_KEY;
+
+  if (!url || !key) {
+    return null; // 👈 critical
+  }
+
+  client = createClient(url, key);
+  return client;
+}

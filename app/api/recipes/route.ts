@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import localRecipes from '../../data/recipes.json';
 
 export async function GET() {
   const { data, error } = await supabase
@@ -7,10 +8,12 @@ export async function GET() {
     .select('id, name, region, ingredients_preview')
     .order('created_at', { ascending: false });
 
-  if (error) {
-    console.error('Error fetching recipes:', error);
-    return NextResponse.json({ error: 'Failed to fetch recipes' }, { status: 500 });
+  // ✅ Supabase success
+  if (!error && data && data.length > 0) {
+    return NextResponse.json(data);
   }
 
-  return NextResponse.json(data);
+  // 🔁 Fallback to local JSON
+  return NextResponse.json(localRecipes);
 }
+

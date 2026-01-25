@@ -1,0 +1,86 @@
+[
+  {
+    "id": "285760ef-54eb-4c46-acc0-b0e7f0ea31f1",
+    "name": "Psarosoupa",
+    "region": "Greece",
+    "ingredients_preview": ["fish","leek","carrots","potatoes","celery","lemon"],
+    "full_ingredients": null,
+    "instructions": null,
+    "image_url": null,
+    "tags": ["soup"],
+    "created_at": "2025-07-31T09:10:08.755078Z",
+    "is_full": false
+  },
+  {
+    "id": "eb2dd9df-37fa-4f69-8dd2-c07b48fabf99",
+    "name": "Kolokythopita",
+    "region": "Greece",
+    "ingredients_preview": ["zucchini","phyllo dough","feta cheese","onions"],
+    "full_ingredients": null,
+    "instructions": null,
+    "image_url": null,
+    "tags": ["bakery"],
+    "created_at": "2025-07-31T09:10:08.755078Z",
+    "is_full": false
+  },
+  {
+    "id": "5a42d243-0890-41d6-90a9-39911ae3488a",
+    "name": "Gemista",
+    "region": "Greece",
+    "ingredients_preview": ["tomatoes","peppers","rice","ground beef","herbs"],
+    "full_ingredients": null,
+    "instructions": null,
+    "image_url": null,
+    "tags": ["main"],
+    "created_at": "2025-07-31T09:10:08.755078Z",
+    "is_full": false
+  },
+  {
+    "id": "33515609-c50f-454f-8a56-3231dfb0c41e",
+    "name": "Polenta",
+    "region": "Italy",
+    "ingredients_preview": ["cornmeal","water","butter","parmesan"],
+    "full_ingredients": null,
+    "instructions": null,
+    "image_url": null,
+    "tags": ["main"],
+    "created_at": "2025-07-31T09:12:24.363913Z",
+    "is_full": false
+  },
+  {
+    "id": "94084b87-010e-4a0b-a4bd-16fa12369ea8",
+    "name": "Baklava",
+    "region": "Turkey",
+    "ingredients_preview": ["phyllo dough","walnuts","honey","butter","sugar"],
+    "full_ingredients": null,
+    "instructions": null,
+    "image_url": null,
+    "tags": ["dessert"],
+    "created_at": "2025-07-31T09:16:32.650115Z",
+    "is_full": false
+  },
+  {
+    "id": "f7a11307-ef3d-4a07-85d6-3b446f2dba83",
+    "name": "Kebap",
+    "region": "Turkey",
+    "ingredients_preview": ["lamb","onions","tomato","pepper","spices"],
+    "full_ingredients": null,
+    "instructions": null,
+    "image_url": null,
+    "tags": ["main"],
+    "created_at": "2025-07-31T09:16:32.650115Z",
+    "is_full": false
+  },
+  {
+    "id": "574be63d-8bb6-46e9-86d3-1724bcf6165a",
+    "name": "Lahmacun",
+    "region": "Turkey",
+    "ingredients_preview": ["flatbread","ground beef","tomato","onion","parsley","spices"],
+    "full_ingredients": null,
+    "instructions": null,
+    "image_url": null,
+    "tags": ["main"],
+    "created_at": "2025-07-31T09:16:32.650115Z",
+    "is_full": false
+  }
+]

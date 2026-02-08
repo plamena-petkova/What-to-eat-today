@@ -8,7 +8,7 @@ import Navbar from '../components/Navbar'
 
 export default function SpinPage() {
   const router = useRouter()
-  const { recipes, loading, error, fetchRecipes } = useRecipesStore()
+  const { recipes, loading, error, fetchRecipes } = useRecipesStore();
 
   const [initialized, setInitialized] = useState(false)
 

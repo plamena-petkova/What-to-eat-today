@@ -2,14 +2,18 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import localRecipes from '../../../data/recipes.json';
 import { Recipe } from '@/app/types/interfaces';
+import React from 'react';
 
 /**
  * GET /api/recipes/[id]
  * Local-first, fallback to Supabase
  */
-export async function GET(_request: Request, context: unknown) {
+export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
   // Cast context safely to access params
-  const id = (context as { params: { id: string } }).params.id;
+
+
+ const { id } = await context.params;
+
 
   // 1️⃣ Try local JSON first
   let recipe: Recipe | null = localRecipes.find(

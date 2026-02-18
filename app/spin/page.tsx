@@ -13,9 +13,9 @@ export default function SpinPage() {
   const [initialized, setInitialized] = useState(false)
 
   function handleSelect(selectedId: string) {
-    setTimeout(() => {
+    // setTimeout(() => {
       router.push(`/result?recipeId=${encodeURIComponent(selectedId)}`)
-    }, 2000)
+    // }, 2000)
   }
 
   useEffect(() => {

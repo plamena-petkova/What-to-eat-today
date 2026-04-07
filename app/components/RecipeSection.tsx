@@ -25,7 +25,7 @@ const itemVariants = {
 export default function RecipeSection({
   recipe
 }: RecipeSectionProps) {
-  const isIngredients = recipe.ingredients_preview.includes('ingredient');
+   const isIngredients = recipe.ingredients_preview.includes('ingredient');
 
   const tagEmojis: Record<string, string> = {
     main: "🥘",
@@ -37,6 +37,12 @@ export default function RecipeSection({
     bakery: "🥐"
   };
 
+  
+// Force TypeScript to understand the type
+const ingredients: string[] =
+  Array.isArray(recipe.ingredients_preview)
+    ? recipe.ingredients_preview
+    : (recipe.ingredients_preview as string)?.split(',').map(s => s.trim()) ?? [];
 
   return (
     <motion.div
@@ -60,7 +66,7 @@ export default function RecipeSection({
 
       {isIngredients ? (
         <motion.ul className="flex flex-wrap gap-2">
-          {recipe.ingredients_preview.map((item, i) => (
+          {ingredients.map((item, i) => (
             <motion.li
               key={i}
               variants={itemVariants}
@@ -72,7 +78,7 @@ export default function RecipeSection({
         </motion.ul>
       ) : (
         <motion.ol className="space-y-2">
-          {recipe.ingredients_preview.map((step, i) => (
+          {ingredients.map((step, i) => (
             <motion.li
               key={i}
               variants={itemVariants}

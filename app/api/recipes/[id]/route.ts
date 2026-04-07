@@ -1,46 +1,27 @@
-import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
-import localRecipes from '../../../data/recipes.json';
-import { Recipe } from '@/app/types/interfaces';
-import React from 'react';
+import { NextResponse } from "next/server";
+import { getAllRecipes } from "@/lib/recipesDb.server";
+import { Recipe } from "@/app/types/interfaces";
 
-/**
- * GET /api/recipes/[id]
- * Local-first, fallback to Supabase
- */
-export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
-  // Cast context safely to access params
+interface Props {
+  params: { id: string };
+}
+
+export async function GET(req: Request, context: { params: Promise<{ id: string }> }) {
+  try {
+
+    const { id } = await context.params;
+    const recipes: Recipe[] = await getAllRecipes();
+
+    const recipe = recipes.find(r => r.id === id);
 
 
- const { id } = await context.params;
-
-
-  // 1️⃣ Try local JSON first
-  let recipe: Recipe | null = localRecipes.find(
-    (r: Recipe) => String(r.id) === String(id)
-  ) || null;
-
-  // 2️⃣ If not found locally, try Supabase
-  if (!recipe && supabase) {
-    const { data, error } = await supabase
-      .from('recipes')
-      .select('*')
-      .eq('id', id)
-      .single();
-
-    if (!error && data) {
-      recipe = data;
+    if (!recipe) {
+      return NextResponse.json({ error: "Recipe not found" }, { status: 404 });
     }
-  }
 
-  // 3️⃣ If still not found, return 404
-  if (!recipe) {
-    return NextResponse.json(
-      { error: 'Recipe not found' },
-      { status: 404 }
-    );
+    return NextResponse.json(recipe);
+  } catch (err: any) {
+    console.error("Error fetching recipe by ID:", err);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
-
-  // 4️⃣ Return the found recipe
-  return NextResponse.json(recipe);
 }

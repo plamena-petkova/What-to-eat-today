@@ -1,96 +1,71 @@
 import { create } from "zustand";
-import type { User } from "@supabase/supabase-js";
-import { supabase } from "@/lib/supabase";
 
 interface AuthState {
-  user: User | null;
+  user: { id: string; email: string } | null;
   loading: boolean;
   error: string | null;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
-  signOut: () => Promise<void>;
-  fetchUser: () => Promise<void>;
+  signOut: () => void;
+  fetchUser: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => {
-  // 🔄 subscribe to Supabase auth state changes
-  supabase.auth.onAuthStateChange((_event, session) => {
-    set({ user: session?.user ?? null });
-  });
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  loading: false,
+  error: null,
 
-  return {
-    user: null,
-    loading: false,
-    error: null,
+  fetchUser: () => {
+    const stored = localStorage.getItem("user");
+    if (stored) set({ user: JSON.parse(stored) });
+  },
 
-    fetchUser: async () => {
-      set({ loading: true, error: null });
-      try {
-        const {
-          data: { user },
-          error,
-        } = await supabase.auth.getUser();
+  signUp: async (email, password) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-        if (error) throw error;
-        set({ user, loading: false });
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          set({ error: err.message, loading: false, user: null });
-        } else {
-          set({ error: "Unknown error", loading: false, user: null });
-        }
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Unknown error");
       }
-    },
 
-    signUp: async (email, password) => {
-      set({ loading: true, error: null });
-      try {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-        if (error) throw error;
-        set({ user: data.user, loading: false });
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          set({ error: err.message, loading: false });
-        } else {
-          set({ error: "Unknown error", loading: false });
-        }
-      }
-    },
+      const user = await res.json(); // { id, email }
+      set({ user, loading: false });
+      localStorage.setItem("user", JSON.stringify(user));
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+    }
+  },
 
-    signIn: async (email, password) => {
-      set({ loading: true, error: null });
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-        set({ user: data.user, loading: false });
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          set({ error: err.message, loading: false });
-        } else {
-          set({ error: "Unknown error", loading: false });
-        }
-      }
-    },
+  signIn: async (email, password) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetch("/api/auth/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    signOut: async () => {
-      set({ loading: true, error: null });
-      try {
-        const { error } = await supabase.auth.signOut();
-        if (error) throw error;
-        set({ user: null, loading: false });
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          set({ error: err.message, loading: false });
-        } else {
-          set({ error: "Unknown error", loading: false });
-        }
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Unknown error");
       }
-    },
-  };
-});
+
+      const user = await res.json(); // { id, email }
+      set({ user, loading: false });
+      localStorage.setItem("user", JSON.stringify(user));
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+    }
+  },
+
+  signOut: () => {
+    set({ user: null });
+    localStorage.removeItem("user");
+  },
+}));

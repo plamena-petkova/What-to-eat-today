@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Navbar from '../components/Navbar';
 import { useState } from 'react';
 import { useAuthStore } from '@/store/userStore';
+import { useRouter } from 'next/navigation';
 
 export default function SignUpPage() {
   const { signUp, loading, error, user } = useAuthStore();
@@ -14,6 +15,7 @@ export default function SignUpPage() {
     email: '',
     password: '',
   });
+  const router = useRouter(); 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,11 +24,9 @@ export default function SignUpPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await signUp(form.fullName, form.email, form.password);
-
-    // Optionally: update user metadata like fullName
-    if (user) {
-      // You can update profile table or Supabase user metadata here
-      // e.g. supabase.from('profiles').insert({ id: user.id, full_name: form.fullName })
+    
+    if (!error) {
+      router.push('/');
     }
   };
 

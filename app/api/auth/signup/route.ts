@@ -1,15 +1,22 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { signin, signup } from "../../../../lib/auth"; ;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") return res.status(405).end();
+import { NextResponse } from "next/server";
+import { signup } from "../../../../lib/auth"; // remove extra semicolon
 
-  const { email, password } = req.body;
+export async function POST(
+  req: Request
+) {
+
+  const { name, email, password } = await req.json();
+  console.log("Received signup request:", name, email, password); // log received data
+
+  if (!name || !email || !password) {
+    return NextResponse.json({ error: "Name, email, and password are required" }, { status: 400 });
+  }
 
   try {
-    const user = await signin(email, password);
-    res.status(200).json(user);
+    const user = await signup(name, email, password); 
+    return NextResponse.json(user);
   } catch (err: any) {
-    res.status(400).json({ error: err.message });
+    return NextResponse.json({ error: err.message || "Signup failed" }, { status: 400 });
   }
 }

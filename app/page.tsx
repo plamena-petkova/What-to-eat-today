@@ -3,8 +3,11 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Navbar from './components/Navbar';
 import Link from 'next/link';
+import { useAuthStore } from '@/store/userStore'
 
 export default function HomePage() {
+  const { user } = useAuthStore();
+
   return (
     <>
       <Navbar />
@@ -47,18 +50,19 @@ export default function HomePage() {
           >
             Spin the Pizza 🎉
           </motion.a>
-
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link
-              href="/signup"
-              className="inline-block bg-pink-600 text-white font-bold rounded-full px-14 py-5 shadow-lg hover:bg-pink-700 hover:shadow-2xl transition"
+          {!user && (
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              Sign Up for Personal Experience ✨
-            </Link>
-          </motion.div>
+              <Link
+                href="/signup"
+                className="inline-block bg-pink-600 text-white font-bold rounded-full px-14 py-5 shadow-lg hover:bg-pink-700 hover:shadow-2xl transition"
+              >
+                Sign Up for Personal Experience ✨
+              </Link>
+            </motion.div>
+          )}
         </div>
 
         <motion.ul

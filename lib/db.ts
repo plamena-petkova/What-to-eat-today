@@ -1,8 +1,11 @@
 import { sheets } from "./sheets.server";
 
+const SPREADSHEET_ID = process.env.GOOGLE_SHEETS_ID!;
+
 export async function appendRow(values: string[]) {
   await sheets.spreadsheets.values.append({
-    range: "Users!A:D",
+    spreadsheetId: SPREADSHEET_ID,
+    range: "USERS!A:D",
     valueInputOption: "RAW",
     requestBody: { values: [values] },
   });
@@ -10,7 +13,8 @@ export async function appendRow(values: string[]) {
 
 export async function getAllUsers(): Promise<string[][]> {
   const res = await sheets.spreadsheets.values.get({
-    range: "Users!A:D",
+    spreadsheetId: SPREADSHEET_ID,
+    range: "USERS!A:D",
   });
   return res.data.values ?? [];
 }

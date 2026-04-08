@@ -21,7 +21,7 @@ export default function SignUpPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await signUp(form.email, form.password);
+    await signUp(form.fullName, form.email, form.password);
 
     // Optionally: update user metadata like fullName
     if (user) {

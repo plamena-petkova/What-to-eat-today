@@ -20,3 +20,11 @@ interface AuthState {
   signOut: () => void; // just clear local user
   fetchUser: () => void; // optional, for session restore if you persist in localStorage
 }
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  password_hash: string;
+  created_at: string;
+}

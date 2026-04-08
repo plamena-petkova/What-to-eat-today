@@ -4,7 +4,7 @@ interface AuthState {
   user: { id: string; email: string } | null;
   loading: boolean;
   error: string | null;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (name: string, email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => void;
   fetchUser: () => void;
@@ -20,13 +20,14 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (stored) set({ user: JSON.parse(stored) });
   },
 
-  signUp: async (email, password) => {
+  signUp: async (name, email, password) => {
     set({ loading: true, error: null });
     try {
+      console.log('email:', email, 'password:', password);
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       if (!res.ok) {

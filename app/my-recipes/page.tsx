@@ -28,11 +28,6 @@ export default function ProfilePage() {
     // navigate to edit page or open modal
   };
 
-  const handleDelete = (id: string) => {
-    console.log('Delete', id);
-    // call your store action to delete recipe
-  };
-
   useEffect(() => {
     if (recipes.length === 0) {
       fetchRecipes(); // fetch recipes if store is empty
@@ -61,14 +56,13 @@ export default function ProfilePage() {
           Add Recipe 🍕
         </motion.a>
         </div>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-6 p-4">
 
           {currentRecipes.map(recipe => (
             <ProfileRecipeCard
               key={recipe.id}
               recipe={recipe}
               onEdit={handleEdit}
-              onDelete={handleDelete}
             />
           ))}
         </div>

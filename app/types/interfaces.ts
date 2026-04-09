@@ -9,6 +9,7 @@ export interface Recipe {
   tags: string[] | null;
   created_at: string; 
   is_full: boolean;
+  user_id?: string;
 }
 
 interface AuthState {

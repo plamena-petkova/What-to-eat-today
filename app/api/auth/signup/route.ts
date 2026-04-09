@@ -7,7 +7,6 @@ export async function POST(
 ) {
 
   const { name, email, password } = await req.json();
-  console.log("Received signup request:", name, email, password); // log received data
 
   if (!name || !email || !password) {
     return NextResponse.json({ error: "Name, email, and password are required" }, { status: 400 });

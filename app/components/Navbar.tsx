@@ -1,27 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { User } from '../types/interfaces';
 import { useAuthStore } from '@/store/userStore';
-
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
   const { user, signOut } = useAuthStore();
   const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = async () => {
     try {
       await signOut();
       router.push('/');
-      router.refresh(); // forces navbar to re-render without user
+      router.refresh();
     } catch (err) {
       console.error('Logout failed', err);
     }
   };
-
 
   return (
     <nav className="backdrop-blur-md shadow-md fixed top-0 left-0 w-full z-50">
@@ -61,44 +64,53 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex gap-6 items-center text-gray-700 font-medium">
+          <Link
+            href="/"
+            onClick={() => setIsOpen(false)}
+            className="text-gray-700 hover:text-pink-600"
+          >
+            Home
+          </Link>
+
           <Link href="/spin" className="hover:text-pink-500 transition">
             Food Wheel
           </Link>
 
           {/* Auth Buttons */}
-          {user ? (
-            <div className="flex gap-3">
-              <Link
-                href="/profile"
-                className="px-4 py-1 rounded-lg border border-pink-500 text-pink-500 hover:bg-pink-50 transition"
-              >
-                Profile
-              </Link>
-              <Link 
-                href="#"
-                onClick={() => {
-                  handleLogout();
-                }}
-                className="px-4 py-1 rounded-lg bg-pink-500 text-white hover:bg-pink-600 transition"
-              >
-                Logout
-              </Link>
-            </div>
-          ) : (
-            <div className="flex gap-3">
-              <Link
-                href="/login"
-                className="px-4 py-1 rounded-lg border border-pink-500 text-pink-500 hover:bg-pink-50 transition"
-              >
-                Login
-              </Link>
-              <Link
-                href="/signup"
-                className="px-4 py-1 rounded-lg bg-pink-500 text-white hover:bg-pink-600 transition"
-              >
-                Sign Up
-              </Link>
-            </div>
+          {mounted && (
+            <>
+              {user ? (
+                <div className="flex gap-3">
+                  <Link
+                    href="/my-recipes"
+                    className="px-4 py-1 rounded-lg border border-pink-500 text-pink-500 hover:bg-pink-50 transition"
+                  >
+                    My Recipes
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-1 rounded-lg bg-pink-500 text-white hover:bg-pink-600 transition"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-3">
+                  <Link
+                    href="/login"
+                    className="px-4 py-1 rounded-lg border border-pink-500 text-pink-500 hover:bg-pink-50 transition"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="px-4 py-1 rounded-lg bg-pink-500 text-white hover:bg-pink-600 transition"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -113,6 +125,7 @@ export default function Navbar() {
           >
             Home
           </Link>
+
           <Link
             href="/spin"
             onClick={() => setIsOpen(false)}
@@ -122,31 +135,47 @@ export default function Navbar() {
           </Link>
 
           {/* Auth Buttons (Mobile) */}
-          {!user ? (
-            <div className="flex flex-col gap-2 mt-2">
-              <Link
-                href="/login"
-                onClick={() => setIsOpen(false)}
-                className="text-center px-4 py-2 rounded-lg border border-pink-500 text-pink-500 hover:bg-pink-50 transition"
-              >
-                Login
-              </Link>
-              <Link
-                href="/signup"
-                onClick={() => setIsOpen(false)}
-                className="text-center px-4 py-2 rounded-lg bg-pink-500 text-white hover:bg-pink-600 transition"
-              >
-                Sign Up
-              </Link>
-            </div>) : (<button
-              onClick={() => {
-                setIsOpen(false);
-                handleLogout();
-              }}
-              className="text-center px-4 py-2 rounded-lg border border-pink-500 text-pink-500 hover:bg-pink-50 transition"
-            >
-              Logout
-            </button>)}
+          {mounted && (
+            <>
+              {user ? (
+                <>
+                  <Link
+                    href="/my-recipes"
+                    onClick={() => setIsOpen(false)}
+                    className="text-center px-4 py-2 rounded-lg border border-pink-500 text-pink-500 hover:bg-pink-50 transition"
+                  >
+                    My Recipes
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setIsOpen(false);
+                      handleLogout();
+                    }}
+                    className="px-4 py-2 rounded-lg bg-pink-500 text-white hover:bg-pink-600 transition"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="text-center px-4 py-2 rounded-lg border border-pink-500 text-pink-500 hover:bg-pink-50 transition"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/signup"
+                    onClick={() => setIsOpen(false)}
+                    className="text-center px-4 py-2 rounded-lg bg-pink-500 text-white hover:bg-pink-600 transition"
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )}
+            </>
+          )}
         </div>
       )}
     </nav>

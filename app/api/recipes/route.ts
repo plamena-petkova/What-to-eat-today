@@ -14,15 +14,7 @@ export async function GET() {
       return NextResponse.json([], { status: 200 });
     }
 
-    // Only return preview fields (like your previous Supabase query)
-    const previewData = recipes.map(r => ({
-      id: r.id,
-      name: r.name,
-      region: r.region,
-      ingredients_preview: r.ingredients_preview,
-    }));
-
-    return NextResponse.json(previewData);
+    return NextResponse.json(recipes, { status: 200 });
   } catch (err: any) {
     console.error("Error fetching recipes from Sheets:", err);
     // Optional: fallback to local JSON if needed

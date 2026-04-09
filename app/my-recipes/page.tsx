@@ -6,6 +6,7 @@ import { useRecipesStore } from '@/store/recipesStore';
 import Navbar from '../components/Navbar';
 import ProfileRecipeCard from '../components/ProfileRecipeCard';
 import LoadingPulsingPizza from '../components/LoadingPulsingPizza';
+import { motion } from 'framer-motion';
 
 export default function ProfilePage() {
   const { user } = useAuthStore();
@@ -38,7 +39,7 @@ export default function ProfilePage() {
     }
   }, [fetchRecipes, recipes.length]);
 
-    if (loading) return <div className="min-h-screen flex items-center flex-col justify-center"><LoadingPulsingPizza /></div> ;
+  if (loading) return <div className="min-h-screen flex items-center flex-col justify-center"><LoadingPulsingPizza /></div>;
 
   return (
     <>
@@ -49,8 +50,19 @@ export default function ProfilePage() {
         {!loading && myRecipes.length === 0 && (
           <p className="text-center">You haven't created recipes yet.</p>
         )}
-
+        <div className="flex justify-center mb-6">
+        <motion.a
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="inline-block bg-pink-600 text-white font-bold rounded-full px-14 py-5 shadow-lg hover:shadow-2xl transition"
+          aria-label="Add your own recipe to the wheel"
+          href="/add-recipe"
+        >
+          Add Recipe 🍕
+        </motion.a>
+        </div>
         <div className="grid md:grid-cols-3 gap-6">
+
           {currentRecipes.map(recipe => (
             <ProfileRecipeCard
               key={recipe.id}
@@ -69,8 +81,8 @@ export default function ProfilePage() {
                 key={i + 1}
                 onClick={() => setCurrentPage(i + 1)}
                 className={`px-3 py-1 rounded ${currentPage === i + 1
-                    ? ' bg-pink-500 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? ' bg-pink-500 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}
               >
                 {i + 1}

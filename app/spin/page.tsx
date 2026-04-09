@@ -1,16 +1,21 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import FoodWheel from '../components/FoodWheel'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRecipesStore } from '@/store/recipesStore'
 import LoadingPulsingPizza from '../components/LoadingPulsingPizza'
 import Navbar from '../components/Navbar'
+import RecipeModeToggle from '../components/RecipeModeToggle'
+import { useAuthStore } from '@/store/userStore'
+
 
 export default function SpinPage() {
   const router = useRouter()
-  const { recipes, loading, error, fetchRecipes } = useRecipesStore();
+  const { recipes, loading, error, fetchRecipes } = useRecipesStore()
+  const { user } = useAuthStore() // <-- current logged user
 
   const [initialized, setInitialized] = useState(false)
+  const [mode, setMode] = useState<"my" | "all">("my")
 
   function handleSelect(selectedId: string) {
     setTimeout(() => {
@@ -22,6 +27,16 @@ export default function SpinPage() {
     fetchRecipes()
     setInitialized(true)
   }, [])
+
+  // ✅ THIS is the whole feature
+  const filteredRecipes = useMemo(() => {
+    if (mode === "all") return recipes
+    if (!user) return []
+
+    return recipes.filter(
+      (recipe) => recipe.user_id === user.id
+    )
+  }, [mode, recipes, user])
 
   if (loading || !initialized) {
     return (
@@ -42,7 +57,15 @@ export default function SpinPage() {
           <h1 className="text-2xl text-center font-extrabold text-white mb-8 drop-shadow-lg">
             What to Eat Today?
           </h1>
-          <FoodWheel items={recipes} onSelect={handleSelect} showLabels={false} />
+
+          <RecipeModeToggle value={mode} onChange={setMode} />
+
+          {/* 👇 only change here */}
+          <FoodWheel
+            items={filteredRecipes}
+            onSelect={handleSelect}
+            showLabels={false}
+          />
         </div>
       </div>
     </>

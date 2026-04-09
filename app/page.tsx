@@ -50,6 +50,15 @@ export default function HomePage() {
           >
             Spin the Pizza 🎉
           </motion.a>
+          {user && ( <motion.a
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-block bg-pink-600 text-white font-bold rounded-full px-14 py-5 shadow-lg hover:shadow-2xl transition"
+            aria-label="Add your own recipe to the wheel"
+            href="/add-recipe"
+          >
+            Add Recipe 🍕
+          </motion.a>)}
           {!user && (
             <motion.div
               whileHover={{ scale: 1.05 }}
